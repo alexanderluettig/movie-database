@@ -1,9 +1,45 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Top 100 movies</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Top 100 movies</h1>
 
-Welcome to your new app.
+@if (movies == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Release Year</th>
+                <th>Summary</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in movies)
+            {
+                <tr>
+                    <td>@movie.Title</td>
+                    <td>@movie.Year</td>
+                    <td>@movie.Genre</td>
+                    <td>@movie.Rating</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code{
+    private IEnumerable<Movie>? movies = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = new HttpClient();
+        movies = await client.GetFromJsonAsync<IEnumerable<Movie>>("http://localhost:5278/movies");
+        movies = movies?.OrderByDescending(m => m.Rating);
+    }
+}
