@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieDatabase.Persistence",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieDatabase.Webcrawler", "MovieDatabase.Webcrawler\MovieDatabase.Webcrawler.csproj", "{91B9E4E5-44B6-451B-9695-57FB68DC7000}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieDatabase.Backend.Tests", "MovieDatabase.Backend.Tests\MovieDatabase.Backend.Tests.csproj", "{4AA9AB9F-705E-4AB0-9F96-7A48B2F6D78C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieDatabase.Identity", "MovieDatabase.Identity\MovieDatabase.Identity.csproj", "{9454214A-3E2D-47D0-A125-24949CD495C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,13 @@ Global
 		{91B9E4E5-44B6-451B-9695-57FB68DC7000}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91B9E4E5-44B6-451B-9695-57FB68DC7000}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91B9E4E5-44B6-451B-9695-57FB68DC7000}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AA9AB9F-705E-4AB0-9F96-7A48B2F6D78C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AA9AB9F-705E-4AB0-9F96-7A48B2F6D78C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AA9AB9F-705E-4AB0-9F96-7A48B2F6D78C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AA9AB9F-705E-4AB0-9F96-7A48B2F6D78C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9454214A-3E2D-47D0-A125-24949CD495C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9454214A-3E2D-47D0-A125-24949CD495C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9454214A-3E2D-47D0-A125-24949CD495C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9454214A-3E2D-47D0-A125-24949CD495C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

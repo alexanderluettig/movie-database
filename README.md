@@ -12,11 +12,16 @@ Implementation for Frontend and Backend of a imdb like movie database
 
 ## Backend
 
-- [ ] Add authentication
-  - [ ] Add register
-  - [ ] Add login
+- [x] Add authentication
+  - [x] Add register
+  - [x] Add login
 - [ ] Add way to add movies
 - [ ] Add image blob service
+
+## Tests
+
+- [ ] Add tests for User Management
+- [ ] Add tests for Movie Management
 
 ## Identity DB Context
 

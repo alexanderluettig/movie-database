@@ -15,7 +15,7 @@ namespace MovieDatabase.Backend.Controllers.Movies
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize]
         public IActionResult GetMovies()
         {
             var movies = _context.Movies;
