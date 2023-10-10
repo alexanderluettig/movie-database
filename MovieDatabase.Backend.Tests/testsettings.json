@@ -1,6 +1,6 @@
 {
-	"DbNames": {
-		"Data": "movie_test.db",
-		"User": "user_test.db"
+	"ConnectionStrings": {
+		"Data": "Data Source=movie_test.db",
+		"User": "Data Source=user_test.db"
 	}
 }

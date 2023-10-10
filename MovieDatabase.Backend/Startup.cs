@@ -19,11 +19,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        var dataDbName = Configuration.GetValue<string>("DbNames:Data");
-        var userDbName = Configuration.GetValue<string>("DbNames:User");
-
-        services.AddDbContext<MovieDBContext>(x => x.UseSqlite($"Data Source={dataDbName}"));
-        services.AddDbContext<UserContext>(x => x.UseSqlite($"Data Source={userDbName}"));
+        services.AddDbContext<MovieDBContext>(x => x.UseSqlite(Configuration.GetConnectionString("Data")));
+        services.AddDbContext<UserContext>(x => x.UseSqlite(Configuration.GetConnectionString("User")));
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();
