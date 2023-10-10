@@ -1,0 +1,6 @@
+{
+	"DbNames": {
+		"Data": "movie_test.db",
+		"User": "user_test.db"
+	}
+}
