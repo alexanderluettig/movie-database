@@ -15,6 +15,11 @@ Implementation for Frontend and Backend of a imdb like movie database
 - [x] Add authentication
   - [x] Add register
   - [x] Add login
+- [ ] Add Roles
+  - [ ] Add Super Admin Role // Can also manage admins and mods
+  - [ ] Add Admin Role // Mod but can also manage mods
+  - [ ] Add User Role
+  - [ ] Add Moderator Role // can edit movies and comments
 - [ ] Add way to add movies
 - [ ] Add image blob service
 
