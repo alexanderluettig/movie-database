@@ -25,6 +25,7 @@ Implementation for Frontend and Backend of a imdb like movie database
 
 ## Tests
 
+- [x] Create Test Setup
 - [ ] Add tests for User Management
 - [ ] Add tests for Movie Management
 
