@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MovieDatabase.Identity;
-public class UserContext : IdentityUserContext<IdentityUser>
+public class UserContext : IdentityDbContext<IdentityUser, IdentityRole, string>
 {
     public UserContext(DbContextOptions<UserContext> options)
         : base(options)

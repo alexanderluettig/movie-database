@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MovieDatabase.Identity;
+using MovieDatabase.Persistence;
+
 namespace MovieDatabase.Backend.Tests
 {
     [Trait("Category", "Integration")]

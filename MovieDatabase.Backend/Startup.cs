@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MovieDatabase.Backend.Extensions;
 using MovieDatabase.Backend.Services;
 using MovieDatabase.Identity;
 using MovieDatabase.Persistence;
@@ -82,6 +83,7 @@ public class Startup
             options.Password.RequireUppercase = false;
             options.Password.RequireLowercase = false;
         })
+        .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<UserContext>();
 
         services.AddScoped<TokenService, TokenService>();
@@ -89,10 +91,6 @@ public class Startup
 
     public void Configure(IApplicationBuilder app)
     {
-        app.UseAuthentication();
-        app.UseRouting();
-        app.UseAuthorization();
-
         using (var scope = app.ApplicationServices.CreateScope())
         {
             var datadb = scope.ServiceProvider.GetRequiredService<MovieDBContext>();
@@ -107,6 +105,12 @@ public class Startup
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.SetupRoles();
+
+        app.UseAuthentication();
+        app.UseRouting();
+        app.UseAuthorization();
 
         app.UseHttpsRedirection();
 
