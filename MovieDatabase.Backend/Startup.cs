@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MovieDatabase.Backend.Extensions;
 using MovieDatabase.Backend.Services;
 using MovieDatabase.Identity;
 using MovieDatabase.Persistence;
@@ -20,8 +19,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddDbContext<MovieDBContext>(x => x.UseSqlite(Configuration.GetConnectionString("Data")));
-        services.AddDbContext<UserContext>(x => x.UseSqlite(Configuration.GetConnectionString("User")));
+        services.AddDbContext<MovieDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("Data")!));
+        services.AddDbContext<UserContext>(x => x.UseSqlServer(Configuration.GetConnectionString("User")!));
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();
@@ -72,6 +71,8 @@ public class Startup
             };
         });
 
+        services.AddAuthorization();
+
         services
         .AddIdentityCore<IdentityUser>(options =>
         {
@@ -106,10 +107,8 @@ public class Startup
             app.UseSwaggerUI();
         }
 
-        app.SetupRoles();
-
-        app.UseAuthentication();
         app.UseRouting();
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.UseHttpsRedirection();

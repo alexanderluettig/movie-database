@@ -14,6 +14,14 @@ public class UserContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<IdentityRole>()
+            .HasData(
+                new[] {
+                    new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
+                    new IdentityRole { Name = "Moderator", NormalizedName = "MODERATOR" },
+                    new IdentityRole { Name = "User", NormalizedName = "USER" } }
+            );
+
         base.OnModelCreating(modelBuilder);
     }
 }

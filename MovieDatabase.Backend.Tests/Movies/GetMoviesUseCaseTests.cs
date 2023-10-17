@@ -6,16 +6,22 @@ using MovieDatabase.Persistence;
 namespace MovieDatabase.Backend.Tests.Movies
 {
     [Collection(nameof(SharedTestCollection))]
-    public class GetMoviesUseCaseTests
+    public class GetMoviesUseCaseTests : IAsyncLifetime
     {
         private readonly MovieApplicationFactory _factory;
         private readonly HttpClient _client;
+        private readonly Func<Task> _resetData;
 
         public GetMoviesUseCaseTests(MovieApplicationFactory factory)
         {
             _factory = factory;
             _client = _factory.HttpClient;
+            _resetData = _factory.ResetDataAsync;
         }
+
+        public Task DisposeAsync() => _resetData();
+
+        public Task InitializeAsync() => Task.CompletedTask;
 
         [Fact]
         public async Task It_should_get_Movies_successfully()
@@ -34,10 +40,10 @@ namespace MovieDatabase.Backend.Tests.Movies
             await arrangeContext.SaveChangesAsync();
 
             var response = await _client.GetAsync("/movies");
+            response.EnsureSuccessStatusCode();
             var movies = await response.Content.ReadFromJsonAsync<List<Movie>>();
 
             movies!.Count.Should().Be(100);
-            response.EnsureSuccessStatusCode();
         }
     }
 }
