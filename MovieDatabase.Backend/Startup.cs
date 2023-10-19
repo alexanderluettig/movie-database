@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +22,6 @@ public class Startup
         services.AddDbContext<MovieDBContext>(x => x.UseSqlServer(Configuration.GetConnectionString("Data")!));
         services.AddDbContext<UserContext>(x => x.UseSqlServer(Configuration.GetConnectionString("User")!));
 
-        services.AddControllers();
         services.AddEndpointsApiExplorer();
 
         services.AddSwaggerGen(option =>
@@ -87,6 +85,11 @@ public class Startup
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<UserContext>();
+
+        services
+            .AddControllers();
+
+        services.AddMediatR(config => config.RegisterServicesFromAssemblies(typeof(Startup).Assembly));
 
         services.AddScoped<TokenService, TokenService>();
     }

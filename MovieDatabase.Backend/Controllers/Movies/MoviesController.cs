@@ -1,6 +1,7 @@
+using System.Runtime.Serialization;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MovieDatabase.Persistence;
 
 namespace MovieDatabase.Backend.Controllers.Movies
 {
@@ -8,32 +9,32 @@ namespace MovieDatabase.Backend.Controllers.Movies
     [Route("[controller]")]
     public class MoviesController : ControllerBase
     {
-        private readonly MovieDBContext _context;
+        private readonly IMediator _mediator;
 
-        public MoviesController(MovieDBContext context)
+        public MoviesController(IMediator mediator)
         {
-            _context = context;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public IActionResult GetMovies()
+        public async Task<IActionResult> GetMovies()
         {
-            var movies = _context.Movies;
+            var movies = await _mediator.Send(new GetMoviesRequest());
             return Ok(movies);
         }
 
         [HttpDelete("{id}"), Authorize(Roles = "Moderator")]
-        public IActionResult DeleteMovie(int id)
+        public async Task<IActionResult> DeleteMovie(int id)
         {
-            var movie = _context.Movies.Find(id);
-            if (movie == null)
+            try
             {
-                return NotFound();
+                await _mediator.Send(new DeleteMovieRequest(id));
+                return Ok();
             }
-
-            _context.Movies.Remove(movie);
-            _context.SaveChanges();
-            return Ok();
+            catch (MovieNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
         }
     }
 }
