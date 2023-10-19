@@ -68,8 +68,6 @@ namespace MovieDatabase.Backend.Tests.Movies
 
             var token = await _client.LoginAsync("mod@testuser.com", "mod12345");
 
-            var check = await userManager.IsInRoleAsync(mod!, "Moderator");
-
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _client.DeleteAsync($"/movies/1337");
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);

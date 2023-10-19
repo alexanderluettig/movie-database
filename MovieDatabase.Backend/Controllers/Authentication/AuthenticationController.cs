@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MovieDatabase.Backend.Services;
@@ -71,6 +73,16 @@ namespace MovieDatabase.Backend.Controllers.Authentication
                 Email = managedUser.Email!,
                 Token = accessToken,
             });
+        }
+
+        [HttpGet]
+        [Route("roles")]
+        [Authorize]
+        public IActionResult GetRoles()
+        {
+            var claims = User.Claims.Select(c => new { c.Type, c.Value });
+
+            return Ok(claims);
         }
     }
 }

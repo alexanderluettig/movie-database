@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -106,6 +107,7 @@ public class Startup
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
 
         app.UseRouting();
         app.UseAuthentication();
