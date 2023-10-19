@@ -14,11 +14,14 @@ namespace MovieDatabase.Backend.Services
         private readonly string _issuer;
         private readonly string _audience;
 
-        public TokenService(IConfiguration configuration)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public TokenService(IConfiguration configuration, UserManager<IdentityUser> userManager)
         {
             _signingToken = configuration.GetValue<string>("JwtSettings:Key")!;
             _issuer = configuration.GetValue<string>("JwtSettings:Issuer")!;
             _audience = configuration.GetValue<string>("JwtSettings:Audience")!;
+            _userManager = userManager;
         }
         public string CreateToken(IdentityUser user)
         {
@@ -42,7 +45,7 @@ namespace MovieDatabase.Backend.Services
                 signingCredentials: credentials
             );
 
-        private static List<Claim> CreateClaims(IdentityUser user)
+        private List<Claim> CreateClaims(IdentityUser user)
         {
             try
             {
@@ -54,6 +57,10 @@ namespace MovieDatabase.Backend.Services
                     new(ClaimTypes.Name, user.UserName!),
                     new(ClaimTypes.Email, user.Email!)
                 };
+
+                var roles = _userManager.GetRolesAsync(user).Result;
+                claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
                 return claims;
             }
             catch (Exception e)

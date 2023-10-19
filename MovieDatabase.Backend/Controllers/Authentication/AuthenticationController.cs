@@ -12,13 +12,11 @@ namespace MovieDatabase.Backend.Controllers.Authentication
     public class AuthController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly UserContext _context;
         private readonly TokenService _tokenService;
-        public AuthController(UserManager<IdentityUser> userManager, UserContext userContext, TokenService tokenService, UserContext context)
+        public AuthController(UserManager<IdentityUser> userManager, TokenService tokenService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
-            _context = context;
         }
 
         [HttpPost]
