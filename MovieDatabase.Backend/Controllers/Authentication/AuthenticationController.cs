@@ -1,22 +1,17 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MovieDatabase.Backend.Services;
-using MovieDatabase.Identity;
 
 namespace MovieDatabase.Backend.Controllers.Authentication
 {
     [ApiController]
     [Route("[controller]")]
-    public class AuthController : ControllerBase
+    public sealed class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly TokenService _tokenService;
-        public AuthController(UserManager<IdentityUser> userManager, TokenService tokenService)
+        private readonly IMediator _mediator;
+
+        public AuthController(IMediator mediator)
         {
-            _userManager = userManager;
-            _tokenService = tokenService;
+            _mediator = mediator;
         }
 
         [HttpPost]
@@ -27,20 +22,21 @@ namespace MovieDatabase.Backend.Controllers.Authentication
             {
                 return BadRequest(ModelState);
             }
-            var result = await _userManager.CreateAsync(
-                new IdentityUser { UserName = request.Username, Email = request.Email },
-                request.Password
-            );
-            if (result.Succeeded)
+
+            try
             {
+                await _mediator.Send(request);
                 request.Password = "";
                 return CreatedAtAction(nameof(Register), new { email = request.Email }, request);
             }
-            foreach (var error in result.Errors)
+            catch (RegistrationException ex)
             {
-                ModelState.AddModelError(error.Code, error.Description);
+                foreach (var error in ex.Errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
             }
-            return BadRequest(ModelState);
         }
 
         [HttpPost]
@@ -52,35 +48,15 @@ namespace MovieDatabase.Backend.Controllers.Authentication
                 return BadRequest(ModelState);
             }
 
-            var managedUser = await _userManager.FindByEmailAsync(request.Email);
-            if (managedUser == null)
+            try
             {
-                return BadRequest("Bad credentials");
+                var response = await _mediator.Send(request);
+                return Ok(response);
             }
-            var isPasswordValid = await _userManager.CheckPasswordAsync(managedUser, request.Password);
-            if (!isPasswordValid)
+            catch (AuthenticationException)
             {
-                return BadRequest("Bad credentials");
+                return BadRequest(AuthenticationException.Title);
             }
-
-            var accessToken = _tokenService.CreateToken(managedUser);
-
-            return Ok(new AuthenticationResponse
-            {
-                Username = managedUser.UserName!,
-                Email = managedUser.Email!,
-                Token = accessToken,
-            });
-        }
-
-        [HttpGet]
-        [Route("roles")]
-        [Authorize]
-        public IActionResult GetRoles()
-        {
-            var claims = User.Claims.Select(c => new { c.Type, c.Value });
-
-            return Ok(claims);
         }
     }
 }
