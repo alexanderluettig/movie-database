@@ -35,6 +35,12 @@ namespace MovieDatabase.Backend.Controllers.Authentication
                 {
                     ModelState.AddModelError(error.Code, error.Description);
                 }
+
+                if (ex.Errors.Any(e => e.Code == "DuplicateUserName" || e.Code == "DuplicateEmail"))
+                {
+                    return Conflict(ModelState);
+                }
+
                 return BadRequest(ModelState);
             }
         }

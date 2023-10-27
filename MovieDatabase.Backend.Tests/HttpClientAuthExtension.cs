@@ -10,7 +10,7 @@ namespace MovieDatabase.Backend.Tests
 
         public static async Task<string> LoginAsync(this HttpClient client, string email, string password)
         {
-            var response = await client.PostAsync("/auth/login", new StringContent(
+            var response = await client.PostAsync("/authentication/login", new StringContent(
                 JsonConvert.SerializeObject(new
                 {
                     email,
