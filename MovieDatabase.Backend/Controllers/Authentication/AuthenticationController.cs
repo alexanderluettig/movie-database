@@ -5,11 +5,11 @@ namespace MovieDatabase.Backend.Controllers.Authentication
 {
     [ApiController]
     [Route("[controller]")]
-    public sealed class AuthController : ControllerBase
+    public sealed class AuthenticationController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public AuthController(IMediator mediator)
+        public AuthenticationController(IMediator mediator)
         {
             _mediator = mediator;
         }

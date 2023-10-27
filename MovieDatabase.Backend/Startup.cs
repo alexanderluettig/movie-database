@@ -103,6 +103,26 @@ public class Startup
 
             var userdb = scope.ServiceProvider.GetRequiredService<UserContext>();
             userdb.Database.Migrate();
+
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+            // Creates a default admin User
+            // I only do this for demo/testing purposes, in a real application you would not do this
+            var defaultAdminName = Configuration.GetValue<string>("DefaultAdminUser:Name")!;
+            var user = userManager.FindByNameAsync(defaultAdminName).Result;
+            if (user == null)
+            {
+                var defaultAdminPassword = Configuration.GetValue<string>("DefaultAdminUser:Password")!;
+                var defaultAdminEmail = Configuration.GetValue<string>("DefaultAdminUser:Email")!;
+                var newUser = new IdentityUser { UserName = defaultAdminName, Email = defaultAdminEmail };
+                userManager.CreateAsync(
+                    newUser,
+                    defaultAdminPassword)
+                    .Wait();
+
+                userManager.AddToRoleAsync(newUser, "Admin").Wait();
+            }
+
         }
 
         if (Configuration.GetValue<string>("ASPNETCORE_ENVIRONMENT") == "Development")
