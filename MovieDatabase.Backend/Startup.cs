@@ -1,4 +1,5 @@
 using System.Text;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using MovieDatabase.Backend.Services;
 using MovieDatabase.Identity;
 using MovieDatabase.Persistence;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 public class Startup
 {
@@ -23,6 +25,7 @@ public class Startup
         services.AddDbContext<UserContext>(x => x.UseSqlServer(Configuration.GetConnectionString("User")!));
 
         services.AddEndpointsApiExplorer();
+        services.AddControllers();
 
         services.AddSwaggerGen(option =>
         {
@@ -86,10 +89,10 @@ public class Startup
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<UserContext>();
 
-        services
-            .AddControllers();
-
         services.AddMediatR(config => config.RegisterServicesFromAssemblies(typeof(Startup).Assembly));
+
+        services.AddValidatorsFromAssemblyContaining(typeof(Startup));
+        services.AddFluentValidationAutoValidation();
 
         services.AddScoped<TokenService, TokenService>();
     }

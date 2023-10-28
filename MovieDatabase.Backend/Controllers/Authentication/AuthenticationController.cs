@@ -1,68 +1,67 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MovieDatabase.Backend.Controllers.Authentication
+namespace MovieDatabase.Backend.Controllers.Authentication;
+
+[ApiController]
+[Route("[controller]")]
+public sealed class AuthenticationController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public sealed class AuthenticationController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public AuthenticationController(IMediator mediator)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public AuthenticationController(IMediator mediator)
+    [HttpPost]
+    [Route("register")]
+    public async Task<IActionResult> Register(RegistrationRequest request)
+    {
+        if (!ModelState.IsValid)
         {
-            _mediator = mediator;
+            return BadRequest(ModelState);
         }
 
-        [HttpPost]
-        [Route("register")]
-        public async Task<IActionResult> Register(RegistrationRequest request)
+        try
         {
-            if (!ModelState.IsValid)
+            await _mediator.Send(request);
+            request.Password = "";
+            return CreatedAtAction(nameof(Register), new { email = request.Email }, request);
+        }
+        catch (RegistrationException ex)
+        {
+            foreach (var error in ex.Errors)
             {
-                return BadRequest(ModelState);
+                ModelState.AddModelError(error.Code, error.Description);
             }
 
-            try
+            if (ex.Errors.Any(e => e.Code == "DuplicateUserName" || e.Code == "DuplicateEmail"))
             {
-                await _mediator.Send(request);
-                request.Password = "";
-                return CreatedAtAction(nameof(Register), new { email = request.Email }, request);
+                return Conflict(ModelState);
             }
-            catch (RegistrationException ex)
-            {
-                foreach (var error in ex.Errors)
-                {
-                    ModelState.AddModelError(error.Code, error.Description);
-                }
 
-                if (ex.Errors.Any(e => e.Code == "DuplicateUserName" || e.Code == "DuplicateEmail"))
-                {
-                    return Conflict(ModelState);
-                }
+            return BadRequest(ModelState);
+        }
+    }
 
-                return BadRequest(ModelState);
-            }
+    [HttpPost]
+    [Route("login")]
+    public async Task<ActionResult<AuthenticationResponse>> Authenticate([FromBody] AuthenticationRequest request)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
         }
 
-        [HttpPost]
-        [Route("login")]
-        public async Task<ActionResult<AuthenticationResponse>> Authenticate([FromBody] AuthenticationRequest request)
+        try
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                var response = await _mediator.Send(request);
-                return Ok(response);
-            }
-            catch (AuthenticationException)
-            {
-                return BadRequest(AuthenticationException.Title);
-            }
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+        catch (AuthenticationException)
+        {
+            return BadRequest(AuthenticationException.Title);
         }
     }
 }
