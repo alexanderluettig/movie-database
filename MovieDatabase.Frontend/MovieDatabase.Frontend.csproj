@@ -14,4 +14,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="MovieDatabase.Frontend.Tests" />
+  </ItemGroup>
+
 </Project>

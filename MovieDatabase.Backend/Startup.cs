@@ -10,6 +10,8 @@ using MovieDatabase.Identity;
 using MovieDatabase.Persistence;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
+namespace MovieDatabase.Backend;
+
 public class Startup
 {
     public Startup(IConfigurationRoot configuration)
@@ -41,17 +43,17 @@ public class Startup
             });
             option.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
+                {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type=ReferenceType.SecurityScheme,
-                                Id="Bearer"
-                            }
-                        },
-                            Array.Empty<string>()
-                    }
+                            Type=ReferenceType.SecurityScheme,
+                            Id="Bearer"
+                        }
+                    },
+                        Array.Empty<string>()
+                }
                 });
         });
 

@@ -13,9 +13,9 @@ using Respawn;
 using Respawn.Graph;
 using Testcontainers.MsSql;
 
-namespace MovieDatabase.Backend.Tests;
+namespace MovieDatabase.Frontend.Tests;
 
-public class MovieApplicationFactory : WebApplicationFactory<Startup>, IAsyncLifetime
+public class MovieApplicationBackendFactory : WebApplicationFactory<Backend.Startup>, IAsyncLifetime
 {
     public IConfiguration? Configuration { get; private set; }
 
