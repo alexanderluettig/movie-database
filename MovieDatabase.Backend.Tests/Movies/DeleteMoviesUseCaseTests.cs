@@ -3,10 +3,11 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using MovieDatabase.Persistence;
+using MovieDatabase.Http.Extensions;
 
 namespace MovieDatabase.Backend.Tests.Movies
 {
-    [Collection(nameof(SharedTestCollection))]
+    [Collection(nameof(SharedBackendCollection))]
     public class DeleteMoviesUseCaseTests : IAsyncLifetime
     {
         private readonly MovieApplicationFactory _factory;

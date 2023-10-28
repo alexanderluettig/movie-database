@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MovieDatabase.Backend\MovieDatabase.Backend.csproj" />
+    <ProjectReference Include="..\MovieDatabase.Http.Extensions\MovieDatabase.Http.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

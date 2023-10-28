@@ -5,7 +5,7 @@ using MovieDatabase.Persistence;
 
 namespace MovieDatabase.Backend.Tests.Movies
 {
-    [Collection(nameof(SharedTestCollection))]
+    [Collection(nameof(SharedBackendCollection))]
     public class GetMoviesUseCaseTests : IAsyncLifetime
     {
         private readonly MovieApplicationFactory _factory;

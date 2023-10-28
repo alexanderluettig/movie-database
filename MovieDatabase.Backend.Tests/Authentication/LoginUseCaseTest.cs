@@ -6,7 +6,7 @@ using MovieDatabase.Backend.Controllers.Authentication;
 
 namespace MovieDatabase.Backend.Tests.Authentication;
 
-[Collection(nameof(SharedTestCollection))]
+[Collection(nameof(SharedBackendCollection))]
 public class LoginUseCaseTest : IAsyncLifetime
 {
     private readonly MovieApplicationFactory _factory;
