@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using MovieDatabase.Backend.Controllers.Authentication;
 
-namespace MovieDatabase.Backend.Tests;
+namespace MovieDatabase.Backend.Tests.Authentication;
 
 [Collection(nameof(SharedTestCollection))]
 public class RegisterUseCaseTest : IAsyncLifetime

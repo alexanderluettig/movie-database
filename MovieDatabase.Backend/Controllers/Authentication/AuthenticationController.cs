@@ -61,7 +61,7 @@ public sealed class AuthenticationController : ControllerBase
         }
         catch (AuthenticationException)
         {
-            return BadRequest(AuthenticationException.Title);
+            return Unauthorized(AuthenticationException.Title);
         }
     }
 }
