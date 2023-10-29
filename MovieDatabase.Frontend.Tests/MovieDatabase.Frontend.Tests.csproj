@@ -15,8 +15,6 @@
     <PackageReference Include="Bogus" Version="34.0.2" />
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="Respawn" Version="6.1.0" />
-    <PackageReference Include="Testcontainers" Version="3.5.0" />
-    <PackageReference Include="Testcontainers.MsSql" Version="3.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.12" />
     <PackageReference Include="xunit" Version="2.4.2" />
@@ -35,4 +33,10 @@
     <ProjectReference Include="..\MovieDatabase.Frontend\MovieDatabase.Frontend.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="testsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
 </Project>

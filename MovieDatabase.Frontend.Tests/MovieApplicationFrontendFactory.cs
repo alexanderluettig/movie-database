@@ -1,18 +1,35 @@
+using System.Data.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Playwright;
+using Respawn;
+using Respawn.Graph;
 
 namespace MovieDatabase.Frontend.Tests;
 
 public class MovieApplicationFrontendFactory : WebApplicationFactory<Startup>, IAsyncLifetime
 {
-    public IBrowser Browser { get; set; } = null!;
     private IPlaywright PlaywrightInstance { get; set; } = null!;
     private IHost? _host;
+    private DbConnection _dbDataConnection = default!;
+    private DbConnection _dbUserConnection = default!;
+    private Respawner _dataRespawner = default!;
+    private Respawner _userRespawner = default!;
+    public IConfiguration? Configuration { get; private set; }
+    public IBrowser Browser { get; set; } = null!;
+
+    public async Task ResetDataAsync()
+    {
+        await _dataRespawner.ResetAsync(_dbDataConnection);
+        await _userRespawner.ResetAsync(_dbUserConnection);
+    }
+
     public string ServerAddress
     {
         get
@@ -20,6 +37,13 @@ public class MovieApplicationFrontendFactory : WebApplicationFactory<Startup>, I
             EnsureServer();
             return ClientOptions.BaseAddress.ToString();
         }
+    }
+
+    public MovieApplicationFrontendFactory()
+    {
+        Configuration = new ConfigurationBuilder()
+                .AddJsonFile("testsettings.json")
+                .Build();
     }
 
     protected override IHost CreateHost(IHostBuilder builder)
@@ -45,6 +69,25 @@ public class MovieApplicationFrontendFactory : WebApplicationFactory<Startup>, I
     {
         PlaywrightInstance = await Playwright.CreateAsync();
         Browser = await PlaywrightInstance.Chromium.LaunchAsync();
+
+        _dbDataConnection = new SqlConnection(Configuration!.GetConnectionString("Data"));
+        _dbUserConnection = new SqlConnection(Configuration!.GetConnectionString("User"));
+
+        await _dbDataConnection.OpenAsync();
+        await _dbUserConnection.OpenAsync();
+
+        _dataRespawner = await Respawner.CreateAsync(_dbDataConnection, new RespawnerOptions
+        {
+            DbAdapter = DbAdapter.SqlServer,
+            SchemasToInclude = new[] { "dbo" },
+        });
+
+        _userRespawner = await Respawner.CreateAsync(_dbUserConnection, new RespawnerOptions
+        {
+            DbAdapter = DbAdapter.SqlServer,
+            SchemasToInclude = new[] { "dbo" },
+            TablesToIgnore = new Table[] { "AspNetRoles" }
+        });
     }
 
     async Task IAsyncLifetime.DisposeAsync()
