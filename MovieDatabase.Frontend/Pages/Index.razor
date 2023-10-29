@@ -1,4 +1,6 @@
-﻿@page "/"
+﻿@inject HttpClient client
+
+@page "/"
 
 <PageTitle>Top 100 movies</PageTitle>
 
@@ -11,16 +13,16 @@
 else
 {
     <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Release Year</th>
-                <th>Summary</th>
-                <th>Rating</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var movie in movies)
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Release Year</th>
+            <th>Summary</th>
+            <th>Rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in movies)
             {
                 <tr>
                     <td>@movie.Title</td>
@@ -33,13 +35,12 @@ else
     </table>
 }
 
-@code{
+@code {
     private IEnumerable<Movie>? movies = null;
 
     protected override async Task OnInitializedAsync()
     {
-        var client = new HttpClient();
-        movies = await client.GetFromJsonAsync<IEnumerable<Movie>>("http://localhost:5278/movies");
+        movies = await client.GetFromJsonAsync<IEnumerable<Movie>>("/movies");
         movies = movies?.OrderByDescending(m => m.Rating);
     }
 }

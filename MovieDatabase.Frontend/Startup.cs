@@ -13,6 +13,12 @@ public class Startup
     {
         services.AddRazorPages();
         services.AddServerSideBlazor();
+
+        services.AddScoped(sp =>
+            new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:5278")
+            });
     }
 
     public void Configure(IApplicationBuilder app)

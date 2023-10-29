@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+    <PackageReference Include="Microsoft.Playwright" Version="1.39.0" />
     <PackageReference Include="Bogus" Version="34.0.2" />
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="Respawn" Version="6.1.0" />
@@ -32,7 +33,6 @@
   <ItemGroup>
     <ProjectReference Include="..\MovieDatabase.Http.Extensions\MovieDatabase.Http.Extensions.csproj" />
     <ProjectReference Include="..\MovieDatabase.Frontend\MovieDatabase.Frontend.csproj" />
-    <ProjectReference Include="..\MovieDatabase.Backend\MovieDatabase.Backend.csproj" />
   </ItemGroup>
 
 </Project>

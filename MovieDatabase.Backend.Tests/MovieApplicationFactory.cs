@@ -37,7 +37,6 @@ public class MovieApplicationFactory : WebApplicationFactory<Startup>, IAsyncLif
         builder.ConfigureAppConfiguration(config =>
         {
             Configuration = new ConfigurationBuilder()
-                .AddJsonFile("testsettings.json")
                 .Build();
 
             config.AddConfiguration(Configuration);
