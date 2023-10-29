@@ -5,21 +5,25 @@ This is just a fun project to learn more about asp.net core.
 
 # TODO
 
-## Frontend
+## Started
 
-- Add authentication
-  - [ ] Add login
-  - [ ] Add register
+- Adding Test data seeding endpoint if environment is testing for frontend tests
 
-## Backend
+## Planned
 
-- Add way to add movies
-- Add image blob service
+- Add Role management endpoint to backend
+- Added Auth to frontend
+  - Figure out how to use jwt token in Frontend
+  - login page
+  - register page
+- Add Role management to frontend (if admin)
+  - add roles to user
+  - remove roles from user
+- Add User management to frontend
+  - change name
+  - change password
+  - change email
 
-## Tests
+# Things i need to research
 
-- Add tests for User Management
-
-## Web Crawler
-
-- Crawl imdb for movies
+- Github Pipeline which runs tests on commit
