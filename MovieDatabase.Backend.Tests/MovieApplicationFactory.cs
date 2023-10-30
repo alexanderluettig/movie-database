@@ -34,14 +34,6 @@ public class MovieApplicationFactory : WebApplicationFactory<Startup>, IAsyncLif
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureAppConfiguration(config =>
-        {
-            Configuration = new ConfigurationBuilder()
-                .Build();
-
-            config.AddConfiguration(Configuration);
-        });
-
         builder.ConfigureTestServices(services =>
         {
             services.RemoveAll(typeof(DbContextOptions<MovieDBContext>));

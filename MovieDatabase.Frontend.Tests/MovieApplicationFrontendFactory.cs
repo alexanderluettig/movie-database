@@ -3,11 +3,17 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Playwright;
+using MovieDatabase.Frontend.Tests.Services;
+using MovieDatabase.Identity;
+using MovieDatabase.Persistence;
 using Respawn;
 using Respawn.Graph;
 
@@ -44,6 +50,17 @@ public class MovieApplicationFrontendFactory : WebApplicationFactory<Startup>, I
         Configuration = new ConfigurationBuilder()
                 .AddJsonFile("testsettings.json")
                 .Build();
+    }
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.ConfigureTestServices(services =>
+        {
+            services.AddDbContext<MovieDBContext>(x => x.UseSqlServer(Configuration!.GetConnectionString("Data")));
+            services.AddDbContext<UserContext>(x => x.UseSqlServer(Configuration!.GetConnectionString("User")));
+
+            services.AddScoped<DataSeedingService>();
+        });
     }
 
     protected override IHost CreateHost(IHostBuilder builder)

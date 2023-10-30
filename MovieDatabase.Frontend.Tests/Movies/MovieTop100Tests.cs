@@ -1,14 +1,15 @@
 using FluentAssertions;
-using MovieDatabase.Frontend.Tests;
+using Microsoft.Extensions.DependencyInjection;
+using MovieDatabase.Frontend.Tests.Services;
+
+namespace MovieDatabase.Frontend.Tests.Movies;
 
 [Collection(nameof(SharedFrontendCollection))]
 public class MovieTop100Tests : IAsyncLifetime
 {
     private readonly MovieApplicationFrontendFactory _factory;
     private readonly Func<Task> _resetData;
-
     public Task DisposeAsync() => _resetData();
-
     public Task InitializeAsync() => Task.CompletedTask;
 
     public MovieTop100Tests(MovieApplicationFrontendFactory factory)
