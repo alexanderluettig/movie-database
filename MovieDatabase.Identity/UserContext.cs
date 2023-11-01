@@ -17,6 +17,7 @@ public class UserContext : IdentityDbContext<IdentityUser, IdentityRole, string>
         modelBuilder.Entity<IdentityRole>()
             .HasData(
                 new[] {
+                    new IdentityRole { Name = "SuperAdmin", NormalizedName = "SUPERADMIN" },
                     new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
                     new IdentityRole { Name = "Moderator", NormalizedName = "MODERATOR" },
                     new IdentityRole { Name = "User", NormalizedName = "USER" } }

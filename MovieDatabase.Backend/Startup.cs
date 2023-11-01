@@ -125,7 +125,7 @@ public class Startup
                     defaultAdminPassword)
                     .Wait();
 
-                userManager.AddToRoleAsync(newUser, "Admin").Wait();
+                userManager.AddToRoleAsync(newUser, "SuperAdmin").Wait();
             }
 
         }

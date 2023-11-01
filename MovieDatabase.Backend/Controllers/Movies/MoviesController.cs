@@ -24,7 +24,7 @@ public class MoviesController : ControllerBase
         return Ok(movies);
     }
 
-    [HttpDelete("{id}"), Authorize(Roles = "Moderator")]
+    [HttpDelete("{id}"), Authorize(Roles = "Moderator,Admin")]
     public async Task<IActionResult> DeleteMovie(int id)
     {
         try
