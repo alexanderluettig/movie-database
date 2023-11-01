@@ -3,15 +3,23 @@
 Implementation for Frontend and Backend of a imdb like movie database.
 This is just a fun project to learn more about asp.net core.
 
+# Things that I Use in this Project
+
+- Blazor
+- MediatR
+- FluentValidation
+- EntityFrameworkCore
+- xUnit
+- Bogus
+
 # TODO
 
 ## Started
 
-- Adding Test data seeding endpoint if environment is testing for frontend tests
+- Add Role management endpoint to backend
 
 ## Planned
 
-- Add Role management endpoint to backend
 - Added Auth to frontend
   - Figure out how to use jwt token in Frontend
   - login page

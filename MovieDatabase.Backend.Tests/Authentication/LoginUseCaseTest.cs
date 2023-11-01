@@ -50,7 +50,7 @@ public class LoginUseCaseTest : IAsyncLifetime
     [Fact]
     public async Task It_should_return_200_for_valid_credentials()
     {
-        var scope = _factory.Services.CreateScope();
+        using var scope = _factory.Services.CreateScope();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
         var user = new IdentityUser

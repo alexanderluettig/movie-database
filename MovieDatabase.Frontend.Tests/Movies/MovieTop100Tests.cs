@@ -21,7 +21,7 @@ public class MovieTop100Tests : IAsyncLifetime
     [Fact]
     public async Task It_should_display_100_Movies()
     {
-        var scope = _factory.Services.CreateScope();
+        using var scope = _factory.Services.CreateScope();
         var seedingService = scope.ServiceProvider.GetRequiredService<DataSeedingService>();
         await seedingService.SeedMovies(100);
 
