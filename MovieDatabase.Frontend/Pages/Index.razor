@@ -24,7 +24,7 @@ else
     <tbody>
         @foreach (var movie in movies)
             {
-                <tr>
+                <tr data-test="movie">
                     <td>@movie.Title</td>
                     <td>@movie.Year</td>
                     <td>@movie.Genre</td>

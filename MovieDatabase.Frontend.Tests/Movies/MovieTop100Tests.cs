@@ -21,9 +21,13 @@ public class MovieTop100Tests : IAsyncLifetime
     [Fact]
     public async Task It_should_display_100_Movies()
     {
+        var scope = _factory.Services.CreateScope();
+        var seedingService = scope.ServiceProvider.GetRequiredService<DataSeedingService>();
+        await seedingService.SeedMovies(100);
+
         var page = await _factory.Browser.NewPageAsync();
         await page.GotoAsync(_factory.ServerAddress + "/");
-        var movies = await page.QuerySelectorAllAsync(".movie");
-        movies.Count.Should().Be(100);
+        var movies = await page.PickAllAsync("movie");
+        movies.ToList().Count.Should().Be(100);
     }
 }

@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using Bogus;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MovieDatabase.Backend.Controllers.Authentication;
@@ -43,5 +44,22 @@ public class DataSeedingService
         await _userContext.SaveChangesAsync();
 
         return (registrationRequest.Email, registrationRequest.Username);
+    }
+
+    public async Task<IEnumerable<Movie>> SeedMovies(int size)
+    {
+        var movieFaker = new Faker<Movie>()
+                .RuleFor(m => m.Title, f => f.Random.Words(3))
+                .RuleFor(m => m.Director, f => f.Name.FullName())
+                .RuleFor(m => m.Year, f => f.Random.Int(1900, 2021))
+                .RuleFor(m => m.Genre, f => f.Random.Enum<Genre>())
+                .RuleFor(m => m.Rating, f => f.Random.Double(0, 100));
+
+        var moviesList = movieFaker.Generate(size);
+
+        _dataContext.Movies.AddRange(moviesList);
+        await _dataContext.SaveChangesAsync();
+
+        return moviesList.AsEnumerable();
     }
 }
