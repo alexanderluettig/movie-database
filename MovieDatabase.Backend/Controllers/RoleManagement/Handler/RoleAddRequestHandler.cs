@@ -16,13 +16,7 @@ public sealed class RoleAddRequestHandler : IRequestHandler<RoleAddRequest>
 
     public async Task Handle(RoleAddRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByIdAsync(request.Id);
-
-        if (user == null)
-        {
-            throw new UserNotFoundException(request.Id);
-        }
-
+        var user = await _userManager.FindByIdAsync(request.Id) ?? throw new UserNotFoundException(request.Id);
         await _userManager.AddToRoleAsync(user, request.Role);
     }
 }
